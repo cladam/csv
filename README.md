@@ -22,7 +22,7 @@ import "./lib/csv/src/csv"
 - **Line endings**: `\n`, `\r\n`, and `\r`
 - **Empty fields**: leading, trailing, and mid-row
 - **Custom delimiters**: tab (TSV), semicolon, or any single-character separator
-- **Header row**: optional — `has_header: true/false` in `CsvOptions`
+- **Header row**: optional, `has_header: true/false` in `CsvOptions`
 - **Round-trip**: serialize a `CsvTable` back to CSV (or any other delimiter)
 
 ## Quick start
@@ -186,26 +186,6 @@ fun main() {
   let opts = CsvOptions { delimiter: "\t", has_header: true, quote_char: "\"" }
   println(csv_to_csv_opts(t, opts))
 }
-```
-
-## Source layout
-
-```
-src/
-  csv.hc        — barrel module (pub import all)
-  csv_types.hc  — CsvOptions, CsvTable, default_opts
-  parser.hc     — RFC 4180 character-level parser
-  api.hc        — accessors and iteration helpers
-  display.hc    — csv_pretty, csv_show, csv_to_csv
-examples/
-  basic_parsing.hc       — parse, access, quoted fields, TSV, round-trip
-  filter_and_transform.hc — computed columns, filter, aggregation
-  read_file.hc           — file I/O, per-group stats, row lookup
-  tsv_and_roundtrip.hc   — delimiter conversion, quoting edge cases
-tests/
-  test_parser.hc   — 18 parser tests
-  test_api.hc      — 24 accessor and iteration tests
-  test_display.hc  — 14 display and serialization tests
 ```
 
 ## Running tests
