@@ -1,0 +1,16 @@
+@project {
+    name: "csv"
+    version: "0.1.0"
+    license: "MIT"
+    entry: "src/main.hc"
+}
+
+@dependencies {
+}
+
+@description {
+    summary: "CSV parser for hica ecosystem"
+    author: "Claes Adamsson <claes.adamsson@gmail.com>"
+    homepage: "https://cladam.github.io/hica"
+    repository: "https://github.com/cladam/csv"
+}
