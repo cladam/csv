@@ -3,7 +3,6 @@ import "./csv_types"
 
 // ============================================================
 // Column width computation
-// (Uses local recursion to avoid cross-file div propagation issues.)
 // ============================================================
 
 // Width of the header at column col.
@@ -19,10 +18,8 @@ pub fun cell_len(cells: list<string>, col: int) : int => match cells {
 }
 
 // Maximum cell length at column col across all rows.
-pub fun max_col_width(rows: list<list<string>>, col: int, acc: int) : int => match rows {
-  [] => acc,
-  [row, ..rest] => max_col_width(rest, col, max(acc, cell_len(row, col)))
-}
+pub fun max_col_width(rows: list<list<string>>, col: int, acc: int) : int =>
+  fold(rows, acc, (a, row) => max(a, cell_len(row, col)))
 
 // Number of columns (headers if present, else first row).
 pub fun display_num_cols(t: CsvTable) : int {
@@ -79,11 +76,9 @@ pub fun separator_line(widths: list<int>) : string {
   }
 }
 
-// Format all data rows as strings (local recursion, no lambda cross-file issue).
-pub fun rows_to_strs(rows: list<list<string>>, widths: list<int>) : list<string> => match rows {
-  [] => [],
-  [row, ..rest] => [format_cells(row, widths)] + rows_to_strs(rest, widths)
-}
+// Format all data rows as strings.
+pub fun rows_to_strs(rows: list<list<string>>, widths: list<int>) : list<string> =>
+  map(rows, (row) => format_cells(row, widths))
 
 // ============================================================
 // Public display functions
@@ -119,11 +114,9 @@ pub fun csv_quote_field(s: string, delim: string, quote: string) : string {
 pub fun format_csv_fields(fields: list<string>, delim: string, quote: string) : string =>
   join(map(fields, (f) => csv_quote_field(f, delim, quote)), delim)
 
-// Format all rows as CSV lines (local recursion).
-pub fun format_csv_rows(rows: list<list<string>>, delim: string, quote: string) : list<string> => match rows {
-  [] => [],
-  [row, ..rest] => [format_csv_fields(row, delim, quote)] + format_csv_rows(rest, delim, quote)
-}
+// Format all rows as CSV lines.
+pub fun format_csv_rows(rows: list<list<string>>, delim: string, quote: string) : list<string> =>
+  map(rows, (row) => format_csv_fields(row, delim, quote))
 
 pub fun csv_to_csv_opts(t: CsvTable, opts: CsvOptions) : string {
   let d = opts.delimiter

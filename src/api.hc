@@ -69,20 +69,10 @@ pub fun csv_get_by_name(t: CsvTable, row: int, name: string) : maybe<string> {
 // Row as associative map
 // ============================================================
 
-// Zip header names with row values into a key-value list.
-pub fun zip_str(ks: list<string>, vs: list<string>) : list<(string, string)> =>
-  match ks {
-    [] => [],
-    [k, ..ks2] => match vs {
-      [] => [],
-      [v, ..vs2] => [(k, v)] + zip_str(ks2, vs2)
-    }
-  }
-
 // Get a row as a list<(header, value)> map. Returns None if the index is out of bounds.
 pub fun csv_row_as_map(t: CsvTable, i: int) : maybe<list<(string, string)>> =>
   match csv_row(t, i) {
-    Some(r) => Some(zip_str(t.headers, r)),
+    Some(r) => Some(zip(t.headers, r)),
     None => None
   }
 
