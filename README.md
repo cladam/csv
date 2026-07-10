@@ -4,16 +4,19 @@ An RFC 4180 CSV parser library for [hica](https://github.com/cladam/hica). Parse
 
 ## Installation
 
-Add as a git submodule to your hica project:
+### 1. Add the package
 
 ```sh
-git submodule add https://github.com/cladam/csv.git lib/csv
+hica add csv
+hica fetch
 ```
 
-Then import the library:
+This records the dependency in `hica.hml` and downloads the package into `vendor/`.
 
-```rust
-import "./lib/csv/src/csv"
+### 2. Import
+
+```hica
+import "csv"
 ```
 
 ## Supported CSV
@@ -27,8 +30,8 @@ import "./lib/csv/src/csv"
 
 ## Quick start
 
-```rust
-import "./lib/csv/src/csv"
+```hica
+import "csv"
 
 fun main() {
   let input = "name,age,city\nAlice,30,New York\nBob,25,London"
@@ -51,7 +54,7 @@ fun main() {
 
 ### Types
 
-```rust
+```hica
 struct CsvOptions {
   delimiter: string,   // default ","
   has_header: bool,    // default true
@@ -73,7 +76,7 @@ fun default_opts() : CsvOptions
 | `csv_parse` | `(string) -> CsvTable` | Parse with default options |
 | `csv_parse_opts` | `(string, CsvOptions) -> CsvTable` | Parse with custom options |
 
-```rust
+```hica
 // Default (comma, header row, double-quote)
 let t = csv_parse(input)
 
@@ -124,8 +127,8 @@ let t = csv_parse_opts(input, opts)
 
 ### Filter and aggregate
 
-```rust
-import "./lib/csv/src/csv"
+```hica
+import "csv"
 
 fun main() {
   let t = csv_parse("product,qty,price\nApple,10,3\nBanana,25,1\nCherry,5,8")
@@ -146,7 +149,7 @@ fun main() {
 
 ### Add a computed column
 
-```rust
+```hica
 fun add_revenue(row: list<string>) : list<string> {
   let q = match str_at(row, 1) { Some(v) => to_int(v), None => 0 }
   let p = match str_at(row, 2) { Some(v) => to_int(v), None => 0 }
@@ -165,8 +168,8 @@ fun main() {
 
 ### Read from a file
 
-```rust
-import "./lib/csv/src/csv"
+```hica
+import "csv"
 
 fun main() {
   match read_file("data.csv") {
@@ -178,8 +181,8 @@ fun main() {
 
 ### Format conversion (CSV → TSV)
 
-```rust
-import "./lib/csv/src/csv"
+```hica
+import "csv"
 
 fun main() {
   let t    = csv_parse("name,city\nAlice,London")

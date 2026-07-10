@@ -11,6 +11,6 @@
 @description {
     summary: "CSV parser for hica ecosystem"
     author: "Claes Adamsson <claes.adamsson@gmail.com>"
-    homepage: "https://cladam.github.io/hica"
+    homepage: "https://www.hica.dev"
     repository: "https://github.com/cladam/csv"
 }
