@@ -86,8 +86,8 @@ pub fun csv_foreach_row(t: CsvTable, f: (list<string>) -> ()) : () =>
 
 // Transform every row into a new list.
 pub fun csv_map_rows(t: CsvTable, f: (list<string>) -> list<string>) : CsvTable =>
-  CsvTable { headers: t.headers, rows: map(t.rows, f) }
+  CsvTable { ...t, rows: map(t.rows, f) }
 
 // Keep only rows that satisfy a predicate.
 pub fun csv_filter_rows(t: CsvTable, f: (list<string>) -> bool) : CsvTable =>
-  CsvTable { headers: t.headers, rows: filter(t.rows, f) }
+  CsvTable { ...t, rows: filter(t.rows, f) }

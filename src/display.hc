@@ -95,7 +95,7 @@ pub fun csv_pretty(t: CsvTable) : string {
     if length(t.headers) > 0 {
       format_cells(t.headers, widths) + "\n" + separator_line(widths) + "\n"
     } else { "" }
-  let data_part = join(rows_to_strs(t.rows, widths), "\n")
+  let data_part = rows_to_strs(t.rows, widths) |> join("\n")
   header_part + data_part
 }
 
@@ -112,7 +112,9 @@ pub fun csv_quote_field(s: string, delim: string, quote: string) : string {
 
 // Format one row as a CSV line.
 pub fun format_csv_fields(fields: list<string>, delim: string, quote: string) : string =>
-  join(map(fields, (f) => csv_quote_field(f, delim, quote)), delim)
+  fields
+    |> map((f) => csv_quote_field(f, delim, quote))
+    |> join(delim)
 
 // Format all rows as CSV lines.
 pub fun format_csv_rows(rows: list<list<string>>, delim: string, quote: string) : list<string> =>
@@ -124,7 +126,8 @@ pub fun csv_to_csv_opts(t: CsvTable, opts: CsvOptions) : string {
   let header_part =
     if length(t.headers) > 0 { format_csv_fields(t.headers, d, q) + "\n" }
     else { "" }
-  header_part + join(format_csv_rows(t.rows, d, q), "\n")
+  let body = format_csv_rows(t.rows, d, q) |> join("\n")
+  header_part + body
 }
 
 // Serialize back to CSV with default options.
